@@ -19,12 +19,15 @@ Tracks the commits in a [git](http://git-scm.com/) repository.
       DWiJL+OFeg9kawcUL6hQ8JeXPhlImG6RTUffma9+iGQyyBMCGd1l
       -----END RSA PRIVATE KEY-----
     ```
+    Note: You can also use pipeline templating to hide this private key in source control. (For more information: https://concourse.ci/fly-set-pipeline.html)
 
 * `username`: *Optional.* Username for HTTP(S) auth when pulling/pushing.
   This is needed when only HTTP/HTTPS protocol for git is available (which does not support private key auth)
   and auth is required.
 
-* `password`: *Optional.* Password for HTTP(S) auth when pulling/pushing.
+* `password`: *Optional.* Password for HTTP(S) auth when pulling/pushing. 
+
+   Note: You can also use pipeline templating to hide this password in source control. (For more information: https://concourse.ci/fly-set-pipeline.html)
 
 * `paths`: *Optional.* If specified (as a list of glob patterns), only changes
   to the specified files will yield new versions from `check`.
@@ -43,12 +46,12 @@ Tracks the commits in a [git](http://git-scm.com/) repository.
 * `skip_ssl_verification`: *Optional.* Skips git ssl verification by exporting
   `GIT_SSL_NO_VERIFY=true`.
 
-* `tag_filter`: *Optional*. If specified, the resource will only detect commits
+* `tag_filter`: *Optional.* If specified, the resource will only detect commits
   that have a tag matching the specified expression. Patterns are
   [glob(7)](http://man7.org/linux/man-pages/man7/glob.7.html) compatible (as
   in, bash compatible).
 
-* `git_config`: *Optional*. If specified as (list of pairs `name` and `value`)
+* `git_config`: *Optional.* If specified as (list of pairs `name` and `value`)
   it will configure git global options, setting each name with each value.
 
   This can be useful to set options like `credential.helper` or similar.
@@ -56,18 +59,18 @@ Tracks the commits in a [git](http://git-scm.com/) repository.
   See the [`git-config(1)` manual page](https://www.kernel.org/pub/software/scm/git/docs/git-config.html)
   for more information and documentation of existing git options.
 
-* `disable_ci_skip`: *Optional* Allows for commits that have been labeled with `[ci skip]` or `[skip ci]`
+* `disable_ci_skip`: *Optional.* Allows for commits that have been labeled with `[ci skip]` or `[skip ci]`
    previously to be discovered by the resource.
 
-* `commit_verification_keys`: *Optional*. Array of GPG public keys that the
+* `commit_verification_keys`: *Optional.* Array of GPG public keys that the
   resource will check against to verify the commit (details below).
 
-* `commit_verification_key_ids`: *Optional*. Array of GPG public key ids that
+* `commit_verification_key_ids`: *Optional.* Array of GPG public key ids that
   the resource will check against to verify the commit (details below). The
   corresponding keys will be fetched from the key server specified in
   `gpg_keyserver`. The ids can be short id, long id or fingerprint.
 
-* `gpg_keyserver`: *Optional*. GPG keyserver to download the public keys from.
+* `gpg_keyserver`: *Optional.* GPG keyserver to download the public keys from.
   Defaults to `hkp:///keys.gnupg.net/`.
 
 * `all_branches`: *Optional*. If set to `true` then fetch all branches, not
@@ -163,10 +166,10 @@ and the `rebase` parameter is not provided, the push will fail.
 * `rebase`: *Optional.* If pushing fails with non-fast-forward, continuously
   attempt rebasing and pushing.
 
-* `tag`: *Optional* If this is set then HEAD will be tagged. The value should be
+* `tag`: *Optional.* If this is set then HEAD will be tagged. The value should be
   a path to a file containing the name of the tag.
 
-* `only_tag`: *Optional* When set to 'true' push only the tags of a repo.
+* `only_tag`: *Optional.* When set to 'true' push only the tags of a repo.
 
 * `tag_prefix`: *Optional.* If specified, the tag read from the file will be
 prepended with this string. This is useful for adding `v` in front of
@@ -176,6 +179,8 @@ version numbers.
   value should be a path to a file containing the name of the branch. Overrides
   the branch name given in the main resource definition. This should be paired
   with the `all_branches` source configuration (see above).
+* `force`: *Optional.* When set to 'true' this will force the branch to be
+pushed regardless of the upstream state.
 
 * `annotate`: *Optional.* If specified the tag will be an
   [annotated](https://git-scm.com/book/en/v2/Git-Basics-Tagging#Annotated-Tags)
